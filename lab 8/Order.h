@@ -15,4 +15,7 @@ public:
     void get(int* client_id, int* num_products, int* total_price); //Получение данных класса
     void set(int client_id, int num_products, int total_price); //Получение данных класса
     void listProducts(Product* product, int count);
+    int getTotalprice() {
+        return total_price;
+    }
 };

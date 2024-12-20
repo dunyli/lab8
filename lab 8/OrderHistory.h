@@ -14,4 +14,8 @@ public:
     int listorder_count() {
         return orderCount;
     };
+    // Метод для получения списка всех заказов
+        vector<Order> getOrders() {
+        return orders;
+    }
 };

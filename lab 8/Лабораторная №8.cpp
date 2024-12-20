@@ -107,6 +107,26 @@ void login(WorkerDatabase *database) {
     } while (succes != 1);
 }
 
+void displayOrderHistory(Order new_order, int j) {
+    string name;
+    int client_id, num_products, total_price, price, count, category_id, supplier_id;
+    printf("Заказ №%d. ", j + 1);
+    new_order.get(&client_id, &num_products, &total_price);
+    printf("ID клиента: %d  ", client_id);
+    for (int a = 0; a < num_products; a++) {
+        printf("Товары: ");
+        printf("%d. ", a + 1);
+        Product new_product;
+        new_order.listProducts(&new_product, a);
+        new_product.get(name, &price, &count, &category_id, &supplier_id);
+        printf("Название продукта: ");
+        cout << name << endl;
+        printf("Цена: %d, Количество: %d\n", price, count);
+    }
+    printf("Общая стоимость: %d\n", total_price);
+    printf("\n");
+}
+
 
 int main()
 {
@@ -290,22 +310,8 @@ int main()
             case 5: {
                 printf("История заказов:\n");
                 for (int j = 0; j < orderhistory.listorder_count(); j++) {
-                    printf("Заказ №%d. ", j + 1);
                     orderhistory.listOrders(&new_order, j);
-                    new_order.get(&client_id, &num_products, &total_price);
-                    printf("ID клиента: %d  ", client_id);
-                    for (int a = 0; a < num_products; a++) {
-                        printf("Товары: ");
-                        printf("%d. ", a + 1);
-                        Product new_product;
-                        new_order.listProducts(&new_product, a);
-                        new_product.get(name, &price, &count, &category_id, &supplier_id);
-                        printf("Название продукта: ");
-                        cout << name << endl;
-                        printf("Цена: %d, Количество: %d\n", price, count);
-                    }
-                    printf("Общая стоимость: %d\n", total_price);
-                    printf("\n");
+                    displayOrderHistory(new_order, j);
                 }
                 break;
             }
@@ -315,7 +321,6 @@ int main()
             }
             }
             break;
-        }
         case 3: {
             num_products_order = 0;
             total_price = 0;
@@ -468,7 +473,20 @@ int main()
                 break;
             }
             case 4: {
-
+                vector<Order> neworderHistory;
+                neworderHistory = orderhistory.getOrders();
+                sort(neworderHistory.begin(), neworderHistory.end(), [](Order& o1, Order& o2) {
+                    int price1, price2;
+                    price1 = o1.getTotalprice();
+                    price2 = o2.getTotalprice();
+                    return  price1 < price2;
+                    });
+                int j = 0;
+                for (Order NewOrder : neworderHistory) {
+                    displayOrderHistory(NewOrder, j);
+                    j++;
+                }
+                break;
             }
             case 5: {
 
@@ -477,7 +495,6 @@ int main()
                 printf("Неверный ввод. Пожалуйста, попробуйте еще раз.\n");
                 break;
             }
-
         }
         case 0:
             printf("Выход...\n");
@@ -485,9 +502,10 @@ int main()
         default:
             printf("Неверный ввод. Пожалуйста, попробуйте еще раз.\n");
         }
-    } while (choice1 != 0);
-    return 0;
-}
+        }
+        } while (choice1 != 0);
+        return 0;
+    }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
