@@ -9,8 +9,6 @@ class Storehouse {
 private:
     vector<Product> products; // Массив объектов Product
     int num_products;
-    int num_animals;
-    int capacity; // Вместимость массива
 public:
     Storehouse(); //конструктор
     void addProduct(Product& newProduct);
@@ -20,4 +18,8 @@ public:
     int listnum_products() {
         return num_products;
     };
+    // Метод для получения списка всех продуктов
+    vector<Product> getProducts(){
+        return products;
+    }
 };

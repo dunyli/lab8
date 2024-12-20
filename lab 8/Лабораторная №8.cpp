@@ -19,6 +19,7 @@
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <algorithm> 
 using namespace std;
 
 // Функция для вывода меню
@@ -94,7 +95,7 @@ void login(WorkerDatabase *database) {
                 scanf("%d", &year);
                 manager.setYears(year);
                 manager.displayInfo();
-                database->addWorker(make_unique<Manager>(username, id, worker.getYears(),department, year, manager.getTeamSize(), manager.getCapacity()));
+                database->addWorker(make_unique<Manager>(username, id, worker.getYears(),department, year, manager.getTeamSize()));
                 database->showWorkerInfo(&manager); // Вызовет Manager::displayInfo
             }
         }
@@ -154,7 +155,7 @@ int main()
     newTeamLead.performTesting();
     newTester.management = new AssistentManager;
     newTester.performManage();
-    login(&database);
+    //login(&database);
     do {
         outmenu();
         scanf("%d", &choice1);
@@ -410,7 +411,62 @@ int main()
             break;
         }
         case 5: {
+            int choicesearch;
             printf("Поиск и сортировка информации.\n");
+            printf("Введите номер функции:\n");
+            printf("1. Вывести список товаров, отсортированных по алфавиту.\n");
+            printf("2. Вывести список товаров отсортированных по возрастанию цены.\n");
+            printf("3. Вывести список товаров отсортированных по убыванию цены.\n");
+            printf("4. Вывести список заказов отсортированных по возрастанию цены.\n");
+            printf("5. Вывести список заказов отсортированных по убыванию цены.\n");
+            printf("6. Поиск товаров.\n");
+            printf("7. Поиск заказов.\n");
+            scanf("%d", &choicesearch);
+            getchar();  // Удаляем символ новой строки из буфера
+            switch (choicesearch)
+            {
+            case 1: {
+                vector<Product> newStorehouse;
+                newStorehouse = storehouse.getProducts();
+                sort(newStorehouse.begin(), newStorehouse.end(), [](Product& p1, Product& p2) {
+                    string str1, str2;
+                    str1 = p1.getName();
+                    str2 = p2.getName();
+                    return str1 < str2;
+                    });
+                for (Product NewProduct : newStorehouse) {
+                    cout << NewProduct << endl;
+                }
+                break;
+            }
+            case 2: {
+                vector<Product> newStorehouse;
+                newStorehouse = storehouse.getProducts();
+                sort(newStorehouse.begin(), newStorehouse.end(), [](Product& p1, Product& p2) {
+                    int price1, price2;
+                    price1 = p1.getPrice();
+                    price2 = p2.getPrice();
+                    return  price1 < price2;
+                    });
+                for (Product NewProduct : newStorehouse) {
+                    cout << NewProduct << endl;
+                }
+                break;
+            }
+            case 3: {
+
+            }
+            case 4: {
+
+            }
+            case 5: {
+
+            }
+            default:
+                printf("Неверный ввод. Пожалуйста, попробуйте еще раз.\n");
+                break;
+            }
+
         }
         case 0:
             printf("Выход...\n");

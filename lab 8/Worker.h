@@ -141,14 +141,12 @@ public:
 class Manager : public Worker{
 private:
     string department;
-    unique_ptr<string> teamMembers; // Указатель на динамический массив членов команды
+    vector<string> teamMembers; // Указатель на динамический массив членов команды
     int teamSize; // Размер команды
-    int capacity; // Вместимость массива
     int yearsAsManager; // Количество лет опыта в качестве менеджера
 public:
     //Конструктор
     Manager(string name, int id, int yearsOfExperience) : Worker(name, id, yearsOfExperience){
-        capacity = 10;
         teamSize = 0;
     }
 
@@ -156,15 +154,14 @@ public:
     Manager() = delete;
 
     // Конструктор менеджера, вызывающий конструктор базового класса
-    Manager(string name, int id, int yearsOfExperience, string department, int yearsAsManager, int teamSize, int capacity)
-        : Worker(name, id, yearsOfExperience), department(department), yearsAsManager(yearsAsManager), teamSize(teamSize), capacity(capacity) {
+    Manager(string name, int id, int yearsOfExperience, string department, int yearsAsManager, int teamSize)
+        : Worker(name, id, yearsOfExperience), department(department), yearsAsManager(yearsAsManager), teamSize(teamSize) {
         if (department.empty()) {
             throw invalid_argument("Отдел не может быть пустым.");
         }
         if (yearsAsManager < 0) {
             throw invalid_argument("Опыт не может быть отрицательным.");
         }
-        teamMembers = make_unique<string[]>(capacity); // Инициализация массива с запасом
     }
 
     // Конструктор клонирования
@@ -172,8 +169,6 @@ public:
         department = other.department;
         yearsAsManager = other.yearsAsManager;
         teamSize = other.teamSize;
-        capacity = other.capacity;
-        teamMembers = make_unique<string[]>(capacity); // Создаем новый массив
         for (int i = 0; i < teamSize; ++i) {
             teamMembers[i] = other.teamMembers[i]; // Копируем строки
         }
@@ -199,17 +194,8 @@ public:
     
     // Метод для добавления члена команды
     void addTeamMember(string& member) {
-        // Резервируем место, если массив полон
-        if (teamSize >= capacity) {
-            // Создаем новый массив большего размера
-            capacity += 10;
-            unique_ptr<string[]> newTeamMembers = make_unique<string[]>(capacity);
-            for (int i = 0; i < teamSize; ++i) {
-                newTeamMembers[i] = move(teamMembers[i]); // Перемещаем строки
-            }
-            teamMembers = move(newTeamMembers);
-        }
-        teamMembers[teamSize++] = member; // Добавляем нового члена команды
+        teamMembers.push_back(member);
+        teamSize++;
     }
 
     // Перегрузка метода changeName, вызывая метод базового класса
@@ -232,11 +218,6 @@ public:
         return teamSize;
     }
 
-    // Метод для получения информации о 
-    int getCapacity() {
-        return capacity;
-    }
-
     //Метод для получения Отдела
     void setDepartment(string department) {
         this->department = department;
@@ -250,7 +231,6 @@ public:
         // Задание значений недостающим полям
         department = "Неизвестный отдел"; // Устанавливаем значения по умолчанию
         teamSize = 0; // Обнуляем размер команды
-        capacity = 10;
         yearsAsManager = 0;
     }
 

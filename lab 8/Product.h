@@ -21,7 +21,9 @@ public:
     int getCount() {
         return count;
     };
-
+    string getName() {
+        return this->name;
+    }
     // Метод для копирования данных
     void copyTo(Product& other) {
         other.name = this->name;
