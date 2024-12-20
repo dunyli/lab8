@@ -454,7 +454,18 @@ int main()
                 break;
             }
             case 3: {
-
+                vector<Product> newStorehouse;
+                newStorehouse = storehouse.getProducts();
+                sort(newStorehouse.begin(), newStorehouse.end(), [](Product& p1, Product& p2) {
+                    int price1, price2;
+                    price1 = p1.getPrice();
+                    price2 = p2.getPrice();
+                    return  price1 > price2;
+                    });
+                for (Product NewProduct : newStorehouse) {
+                    cout << NewProduct << endl;
+                }
+                break;
             }
             case 4: {
 
