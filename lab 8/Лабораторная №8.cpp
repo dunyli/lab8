@@ -489,7 +489,20 @@ int main()
                 break;
             }
             case 5: {
-
+                vector<Order> neworderHistory;
+                neworderHistory = orderhistory.getOrders();
+                sort(neworderHistory.begin(), neworderHistory.end(), [](Order& o1, Order& o2) {
+                    int price1, price2;
+                    price1 = o1.getTotalprice();
+                    price2 = o2.getTotalprice();
+                    return  price1 > price2;
+                    });
+                int j = 0;
+                for (Order NewOrder : neworderHistory) {
+                    displayOrderHistory(NewOrder, j);
+                    j++;
+                }
+                break;
             }
             default:
                 printf("Неверный ввод. Пожалуйста, попробуйте еще раз.\n");
