@@ -504,6 +504,27 @@ int main()
                 }
                 break;
             }
+            case 6: {
+                string name_product;
+                printf("Введите название товара, который нужно найти: ");
+                getline(cin, name_product);
+                vector<Product> newStorehouse;
+                newStorehouse = storehouse.getProducts();
+                vector<Product> result;
+                copy_if(newStorehouse.begin(), newStorehouse.end(), back_inserter(result), [&name_product](Product& p1)
+                    {
+                        string str1, str2;
+                        str1 = p1.getName();
+                        return str1 == name_product;
+                    });
+                int j = 0;
+                for (Product NewProduct : result) {
+                    cout << NewProduct << endl;
+                }
+                break;
+            }
+            case 7: {
+            }
             default:
                 printf("Неверный ввод. Пожалуйста, попробуйте еще раз.\n");
                 break;
