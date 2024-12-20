@@ -425,7 +425,7 @@ int main()
             printf("4. Вывести список заказов отсортированных по возрастанию цены.\n");
             printf("5. Вывести список заказов отсортированных по убыванию цены.\n");
             printf("6. Поиск товаров.\n");
-            printf("7. Поиск заказов.\n");
+            printf("7. Проверка существует ли категория товаров.\n");
             scanf("%d", &choicesearch);
             getchar();  // Удаляем символ новой строки из буфера
             switch (choicesearch)
@@ -508,14 +508,11 @@ int main()
                 string name_product;
                 printf("Введите название товара, который нужно найти: ");
                 getline(cin, name_product);
-                vector<Product> newStorehouse;
-                newStorehouse = storehouse.getProducts();
+                vector<Product> newStorehouse = storehouse.getProducts();
                 vector<Product> result;
                 copy_if(newStorehouse.begin(), newStorehouse.end(), back_inserter(result), [&name_product](Product& p1)
                     {
-                        string str1, str2;
-                        str1 = p1.getName();
-                        return str1 == name_product;
+                        return p1.getName() == name_product;
                     });
                 int j = 0;
                 for (Product NewProduct : result) {
@@ -524,12 +521,26 @@ int main()
                 break;
             }
             case 7: {
+                string name_category;
+                printf("Введите название категории, которую нужно проверить: ");
+                getline(cin, name_category);
+                vector<Category> newCategories = store.getCategories();
+                auto result = find_if(newCategories.begin(), newCategories.end(), [&name_category](Category& c1)
+                    {
+                        return c1.get() == name_category;
+                    });
+                if (result == newCategories.end()) {
+                    printf("Категория с данным именем не существует.\n");
+                }
+                else printf("Категория с данным именем уже существует.\n");
+                break;
             }
             default:
                 printf("Неверный ввод. Пожалуйста, попробуйте еще раз.\n");
                 break;
             }
         }
+        break;
         case 0:
             printf("Выход...\n");
             break;

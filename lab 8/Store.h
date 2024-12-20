@@ -33,4 +33,8 @@ public:
     int listnum_clients() {
         return num_clients;
     };
+    // Метод для получения списка всех категорий
+    vector<Category> getCategories() {
+        return categories;
+    }
 };
