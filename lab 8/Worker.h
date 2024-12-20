@@ -141,7 +141,7 @@ public:
 class Manager : public Worker{
 private:
     string department;
-    unique_ptr<string[]> teamMembers; // Указатель на динамический массив членов команды
+    unique_ptr<string> teamMembers; // Указатель на динамический массив членов команды
     int teamSize; // Размер команды
     int capacity; // Вместимость массива
     int yearsAsManager; // Количество лет опыта в качестве менеджера

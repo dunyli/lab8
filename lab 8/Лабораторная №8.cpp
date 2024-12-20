@@ -27,6 +27,7 @@ void outmenu() {
     printf("2. Вывод данных\n");
     printf("3. Создание заказа\n");
     printf("4. Выбор услуги\n");
+    printf("5. Поиск и сортировка информации\n");
     printf("0. Выход\n");
     printf("Выберите действие: ");
 }
@@ -280,7 +281,7 @@ int main()
                 printf("Список товаров:\n");
                 for (int j = 0; j < storehouse.listnum_products(); j++) {
                     printf("ID: %d. ", j + 1);
-                    storehouse.listStorehouse(new_product, j);
+                    storehouse.listStorehouse(&new_product, j);
                     cout << new_product << endl;
                 }
                 break;
@@ -328,7 +329,7 @@ int main()
                 while (product_id != 0) {
                     if (product_id > 0 && product_id <= storehouse.listnum_products()) {
                         Product new_product;
-                        storehouse.listStorehouse(new_product, product_id - 1);
+                        storehouse.listStorehouse(&new_product, product_id - 1);
                         printf("Введите количество товара (макс. %d): ", new_product.getCount());
                         scanf("%d", &volume);
                         if (volume > 0 && volume <= new_product.getCount()) {
@@ -407,6 +408,9 @@ int main()
                 }
             } while (choice_service != 0);
             break;
+        }
+        case 5: {
+            printf("Поиск и сортировка информации.\n");
         }
         case 0:
             printf("Выход...\n");
